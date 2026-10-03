@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FitTrack">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>FitTrack — Fitness & Nutrition</title>
+  <style>
+    :root{--bg:#f6f7fb;--card:#fff;--text:#151922;--muted:#747b8a;--line:#e9ebf0;--accent:#5b5ce2;--accent2:#7c83ff;--green:#24a46d;--orange:#f59e0b;--red:#ef5350;--shadow:0 8px 28px rgba(20,25,40,.07);--radius:20px}
+    *{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Inter,system-ui,sans-serif}
+    body{min-height:100vh}.app{max-width:1100px;margin:auto;padding:22px 18px 100px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.brand{display:flex;gap:11px;align-items:center}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:21px;font-weight:800;box-shadow:0 8px 18px rgba(91,92,226,.25)}h1{font-size:22px;margin:0}h2{font-size:19px;margin:0 0 14px}h3{font-size:15px;margin:0 0 8px}.sub{color:var(--muted);font-size:13px}
+    button,input,select{font:inherit}button{border:0;cursor:pointer}.iconbtn{width:42px;height:42px;border-radius:14px;background:var(--card);box-shadow:var(--shadow);font-size:18px}
+    .grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,1fr)}.two{grid-template-columns:1.25fr .75fr}.three{grid-template-columns:repeat(3,1fr)}
+    .card{background:var(--card);border:1px solid rgba(0,0,0,.025);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}.metric{min-height:118px}.metric .num{font-size:28px;font-weight:800;margin:8px 0 3px}.metric .unit{font-size:12px;color:var(--muted)}
+    .progress{height:8px;background:#eceef4;border-radius:20px;overflow:hidden;margin-top:10px}.progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:20px}
+    .ringwrap{display:flex;align-items:center;gap:18px}.ring{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) calc(var(--p)*1%),#eceef4 0);position:relative}.ring:after{content:"";position:absolute;width:88px;height:88px;border-radius:50%;background:#fff}.ring strong{z-index:1;font-size:22px}.list{display:flex;flex-direction:column;gap:10px}.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.pill{padding:6px 9px;border-radius:10px;background:#f0f1ff;color:var(--accent);font-size:11px;font-weight:700}
+    .tabs{position:fixed;z-index:20;left:50%;bottom:14px;transform:translateX(-50%);width:min(700px,calc(100% - 24px));background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:22px;box-shadow:0 12px 35px rgba(0,0,0,.13);display:grid;grid-template-columns:repeat(5,1fr);padding:7px}.tab{background:transparent;color:var(--muted);padding:9px 4px;border-radius:16px;font-size:11px}.tab.active{background:#eef0ff;color:var(--accent);font-weight:800}.tab span{display:block;font-size:19px;margin-bottom:2px}
+    .section{display:none}.section.active{display:block}.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:4px 0 16px}.primary{background:var(--accent);color:#fff;border-radius:13px;padding:11px 15px;font-weight:750}.secondary{background:#f0f1f5;color:var(--text);border-radius:13px;padding:11px 15px;font-weight:650}
+    .meal{padding:15px;border:1px solid var(--line);border-radius:17px;margin-bottom:11px}.mealhead{display:flex;justify-content:space-between;align-items:center}.fooditem{display:flex;justify-content:space-between;padding-top:10px;font-size:13px}.macro{color:var(--muted);font-size:11px}
+    .form{display:grid;gap:11px}.field label{display:block;font-size:11px;color:var(--muted);margin:0 0 5px}.field input,.field select{width:100%;border:1px solid var(--line);background:#fafbfc;border-radius:12px;padding:11px;outline:none}.field input:focus,.field select:focus{border-color:var(--accent)}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.formgrid.three{grid-template-columns:repeat(3,1fr)}
+    .modal{position:fixed;inset:0;background:rgba(10,13,20,.45);z-index:40;display:none;align-items:flex-end;justify-content:center;padding:12px}.modal.open{display:flex}.sheet{background:#fff;border-radius:24px 24px 18px 18px;padding:20px;width:min(600px,100%);max-height:88vh;overflow:auto}.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .exercise{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}.sets{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.setinput{min-width:0}.setinput input{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px}
+    .chart{height:220px;display:flex;align-items:end;gap:7px;padding:15px 4px 0}.bar{flex:1;background:linear-gradient(180deg,var(--accent2),var(--accent));border-radius:8px 8px 3px 3px;min-height:4px;position:relative}.bar small{position:absolute;bottom:-22px;width:100%;text-align:center;color:var(--muted);font-size:9px}.empty{text-align:center;padding:30px 10px;color:var(--muted);font-size:13px}
+    .goal{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.goal:last-child{border:0}.goal input{width:90px;text-align:right;border:1px solid var(--line);border-radius:10px;padding:8px}
+    .toast{position:fixed;z-index:60;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);opacity:0;background:#151922;color:#fff;padding:11px 15px;border-radius:12px;font-size:13px;transition:.25s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}.app{padding:17px 13px 105px}.card{padding:15px}.metric .num{font-size:24px}.formgrid.three{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header><div class="brand"><div class="logo">✦</div><div><h1>FitTrack</h1><div class="sub">Fitness & nutrition, together</div></div></div><button class="iconbtn" onclick="openModal('quickModal')">＋</button></header>
+
+  <main id="today" class="section active">
+    <div class="toolbar"><div><h2>Today</h2><div class="sub" id="todayDate"></div></div></div>
+    <div class="grid stats">
+      <div class="card metric"><div class="sub">Calories</div><div class="num" id="calVal">0</div><div class="unit">of <span id="calGoal">2,000</span> kcal</div><div class="progress"><span id="calBar"></span></div></div>
+      <div class="card metric"><div class="sub">Protein</div><div class="num" id="proteinVal">0g</div><div class="unit">of <span id="proteinGoal">120</span>g</div><div class="progress"><span id="proteinBar"></span></div></div>
+      <div class="card metric"><div class="sub">Water</div><div class="num" id="waterVal">0</div><div class="unit">of <span id="waterGoal">8</span> glasses</div><div class="progress"><span id="waterBar"></span></div></div>
+      <div class="card metric"><div class="sub">Steps</div><div class="num" id="stepsVal">0</div><div class="unit">of <span id="stepsGoal">8,000</span></div><div class="progress"><span id="stepsBar"></span></div></div>
+    </div>
+    <div class="grid two" style="margin-top:15px">
+      <div class="card"><div class="toolbar"><h2>Nutrition</h2><button class="primary" onclick="openFoodModal()">＋ Add food</button></div>
+        <div class="ringwrap"><div class="ring" id="calRing" style="--p:0"><strong id="ringPct">0%</strong></div><div><h3 id="macroSummary">0 kcal</h3><div class="sub" id="macroDetail">P 0g · C 0g · F 0g</div><div style="margin-top:12px"><button class="secondary" onclick="switchTab('food')">View food log</button></div></div></div>
+      </div>
+      <div class="card"><h2>Today's activity</h2><div class="row"><span>🏃 Steps</span><strong id="activitySteps">0</strong></div><div class="row"><span>💧 Water</span><strong id="activityWater">0</strong></div><div class="row"><span>🏋️ Workout</span><strong id="activityWorkout">Rest day</strong></div><button class="secondary" style="width:100%;margin-top:8px" onclick="switchTab('workouts')">Log workout</button></div>
+    </div>
+    <div class="card" style="margin-top:15px"><div class="toolbar"><h2>Meals</h2><button class="secondary" onclick="switchTab('food')">Manage</button></div><div id="todayMeals"></div></div>
+  </main>
+
+  <main id="food" class="section">
+    <div class="toolbar"><div><h2>Food</h2><div class="sub">Track meals and macros</div></div><button class="primary" onclick="openFoodModal()">＋ Add food</button></div>
+    <div class="card"><div class="toolbar"><h2>Today’s meals</h2><span class="pill" id="foodTotal">0 kcal</span></div><div id="foodLog"></div></div>
+    <div class="card" style="margin-top:15px"><div class="toolbar"><h2>Quick actions</h2></div><button class="secondary" onclick="openCustomFoodModal()">＋ Create custom food</button></div>
+  </main>
+
+  <main id="workouts" class="section">
+    <div class="toolbar"><div><h2>Workouts</h2><div class="sub">Log exercises, sets and progress</div></div><button class="primary" onclick="openWorkoutModal()">＋ Workout</button></div>
+    <div class="card"><h2>Start a workout</h2><div id="exerciseBuilder"></div><button class="secondary" style="width:100%;margin-top:7px" onclick="addExerciseRow()">＋ Add exercise</button><button class="primary" style="width:100%;margin-top:10px" onclick="saveWorkout()">Save workout</button></div>
+    <div class="card" style="margin-top:15px"><h2>Workout history</h2><div id="workoutHistory"></div></div>
+  </main>
+
+  <main id="progress" class="section">
+    <div class="toolbar"><div><h2>Progress</h2><div class="sub">Your trends over time</div></div><button class="primary" onclick="openProgressModal()">＋ Log weight</button></div>
+    <div class="grid three"><div class="card"><div class="sub">Current weight</div><div class="num" style="font-size:26px;font-weight:800" id="currentWeight">—</div></div><div class="card"><div class="sub">Starting weight</div><div class="num" style="font-size:26px;font-weight:800" id="startWeight">—</div></div><div class="card"><div class="sub">Change</div><div class="num" style="font-size:26px;font-weight:800" id="weightChange">—</div></div></div>
+    <div class="card" style="margin-top:15px"><h2>Weight trend</h2><div class="chart" id="weightChart"></div></div>
+    <div class="card" style="margin-top:15px"><h2>Recent entries</h2><div id="weightHistory"></div></div>
+  </main>
+
+  <main id="goals" class="section">
+    <div class="toolbar"><div><h2>Goals</h2><div class="sub">Set targets that fit your routine</div></div></div>
+    <div class="card"><div class="goal"><div><strong>Daily calories</strong><div class="sub">kcal</div></div><input id="gCalories" type="number"></div><div class="goal"><div><strong>Protein</strong><div class="sub">grams/day</div></div><input id="gProtein" type="number"></div><div class="goal"><div><strong>Water</strong><div class="sub">glasses/day</div></div><input id="gWater" type="number"></div><div class="goal"><div><strong>Steps</strong><div class="sub">steps/day</div></div><input id="gSteps" type="number"></div><div class="goal"><div><strong>Target weight</strong><div class="sub">kg</div></div><input id="gWeight" type="number" step=".1"></div><button class="primary" style="margin-top:15px;width:100%" onclick="saveGoals()">Save goals</button></div>
+    <div class="card" style="margin-top:15px"><h2>Daily tracking</h2><div class="row"><span>💧 Add 1 glass water</span><button class="secondary" onclick="addWater()">＋ Add</button></div><div class="row"><span>👟 Update steps</span><button class="secondary" onclick="openStepsModal()">Edit</button></div></div>
+  </main>
+</div>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="today" onclick="switchTab('today')"><span>⌂</span>Today</button>
+  <button class="tab" data-tab="food" onclick="switchTab('food')"><span>🍽</span>Food</button>
+  <button class="tab" data-tab="workouts" onclick="switchTab('workouts')"><span>🏋</span>Workout</button>
+  <button class="tab" data-tab="progress" onclick="switchTab('progress')"><span>↗</span>Progress</button>
+  <button class="tab" data-tab="goals" onclick="switchTab('goals')"><span>◎</span>Goals</button>
+</nav>
+
+<div class="modal" id="foodModal"><div class="sheet"><div class="sheethead"><h2>Add food</h2><button class="iconbtn" onclick="closeModal('foodModal')">×</button></div><div class="form"><div class="field"><label>Meal</label><select id="foodMeal"><option>Breakfast</option><option>Lunch</option><option>Dinner</option><option>Snack</option></select></div><div class="field"><label>Food name</label><input id="foodName" placeholder="e.g. Chicken breast"></div><div class="formgrid three"><div class="field"><label>Calories</label><input id="foodCal" type="number" min="0"></div><div class="field"><label>Protein (g)</label><input id="foodP" type="number" min="0"></div><div class="field"><label>Carbs (g)</label><input id="foodC" type="number" min="0"></div></div><div class="field"><label>Fat (g)</label><input id="foodF" type="number" min="0"></div><button class="primary" onclick="saveFood()">Add food</button></div></div></div>
+
+<div class="modal" id="customFoodModal"><div class="sheet"><div class="sheethead"><h2>Create custom food</h2><button class="iconbtn" onclick="closeModal('customFoodModal')">×</button></div><div class="form"><div class="field"><label>Name</label><input id="cfName" placeholder="My food"></div><div class="formgrid three"><div class="field"><label>Calories</label><input id="cfCal" type="number"></div><div class="field"><label>Protein</label><input id="cfP" type="number"></div><div class="field"><label>Carbs</label><input id="cfC" type="number"></div></div><div class="field"><label>Fat</label><input id="cfF" type="number"></div><button class="primary" onclick="saveCustomFood()">Save custom food</button></div></div></div>
+
+<div class="modal" id="workoutModal"><div class="sheet"><div class="sheethead"><h2>New workout</h2><button class="iconbtn" onclick="closeModal('workoutModal')">×</button></div><div class="form"><div class="field"><label>Workout name</label><input id="workoutName" value="Workout"></div><div class="field"><label>Duration (minutes)</label><input id="workoutDuration" type="number" value="30"></div><button class="primary" onclick="closeModal('workoutModal');toast('Workout details ready below')">Continue</button></div></div></div>
+
+<div class="modal" id="progressModal"><div class="sheet"><div class="sheethead"><h2>Log weight</h2><button class="iconbtn" onclick="closeModal('progressModal')">×</button></div><div class="form"><div class="field"><label>Weight (kg)</label><input id="weightInput" type="number" step=".1"></div><button class="primary" onclick="saveWeight()">Save weight</button></div></div></div>
+
+<div class="modal" id="stepsModal"><div class="sheet"><div class="sheethead"><h2>Update steps</h2><button class="iconbtn" onclick="closeModal('stepsModal')">×</button></div><div class="form"><div class="field"><label>Today's steps</label><input id="stepsInput" type="number" min="0"></div><button class="primary" onclick="saveSteps()">Save steps</button></div></div></div>
+
+<div class="modal" id="quickModal"><div class="sheet"><div class="sheethead"><h2>Quick add</h2><button class="iconbtn" onclick="closeModal('quickModal')">×</button></div><div class="grid two"><button class="secondary" onclick="closeModal('quickModal');openFoodModal()">🍽 Add food</button><button class="secondary" onclick="closeModal('quickModal');addWater()">💧 Water</button><button class="secondary" onclick="closeModal('quickModal');openStepsModal()">👟 Steps</button><button class="secondary" onclick="closeModal('quickModal');openProgressModal()">⚖️ Weight</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY='fittrack_v1';
+const todayKey=()=>new Date().toISOString().slice(0,10);
+const blankDay=()=>({foods:[],water:0,steps:0,workout:null});
+let state=JSON.parse(localStorage.getItem(KEY)||'null')||{
+  goals:{calories:2000,protein:120,water:8,steps:8000,targetWeight:65},
+  days:{}, weights:[], workouts:[], customFoods:[]
+};
+function day(){state.days[todayKey()] ||= blankDay();return state.days[todayKey()]}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));render()}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)}
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function switchTab(id){document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));render()}
+function pct(v,g){return Math.min(100,Math.round((v/(g||1))*100))}
+function totals(){return day().foods.reduce((a,f)=>{a.cal+=+f.cal||0;a.p+=+f.p||0;a.c+=+f.c||0;a.f+=+f.f||0;return a},{cal:0,p:0,c:0,f:0})}
+function render(){
+  document.getElementById('todayDate').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+  const t=totals(),g=state.goals;
+  document.getElementById('calVal').textContent=Math.round(t.cal);document.getElementById('calGoal').textContent=g.calories.toLocaleString();document.getElementById('calBar').style.width=pct(t.cal,g.calories)+'%';
+  document.getElementById('proteinVal').textContent=Math.round(t.p)+'g';document.getElementById('proteinGoal').textContent=g.protein;document.getElementById('proteinBar').style.width=pct(t.p,g.protein)+'%';
+  document.getElementById('waterVal').textContent=day().water;document.getElementById('waterGoal').textContent=g.water;document.getElementById('waterBar').style.width=pct(day().water,g.water)+'%';
+  document.getElementById('stepsVal').textContent=day().steps.toLocaleString();document.getElementById('stepsGoal').textContent=g.steps.toLocaleString();document.getElementById('stepsBar').style.width=pct(day().steps,g.steps)+'%';
+  const cp=pct(t.cal,g.calories);document.getElementById('calRing').style.setProperty('--p',cp);document.getElementById('ringPct').textContent=cp+'%';document.getElementById('macroSummary').textContent=Math.round(t.cal)+' kcal';document.getElementById('macroDetail').textContent=`P ${Math.round(t.p)}g · C ${Math.round(t.c)}g · F ${Math.round(t.f)}g`;
+  document.getElementById('activitySteps').textContent=day().steps.toLocaleString();document.getElementById('activityWater').textContent=day().water+' glasses';document.getElementById('activityWorkout').textContent=day().workout?day().workout.name:'Rest day';
+  renderMeals('todayMeals');renderMeals('foodLog');document.getElementById('foodTotal').textContent=Math.round(t.cal)+' kcal';renderHistory();renderWeights();renderGoals();
+}
+function renderMeals(id){
+  const el=document.getElementById(id);const foods=day().foods;
+  if(!foods.length){el.innerHTML='<div class="empty">No food logged yet.<br>Add your first meal above.</div>';return}
+  const meals=['Breakfast','Lunch','Dinner','Snack'];el.innerHTML=meals.map(m=>{
+    const fs=foods.filter(f=>f.meal===m);if(!fs.length)return '';
+    const total=fs.reduce((x,f)=>x+(+f.cal||0),0);
+    return `<div class="meal"><div class="mealhead"><strong>${m}</strong><span class="pill">${Math.round(total)} kcal</span></div>${fs.map((f,i)=>`<div class="fooditem"><span>${esc(f.name)}<div class="macro">P ${f.p}g · C ${f.c}g · F ${f.f}g</div></span><button class="secondary" style="padding:6px 9px" onclick="deleteFood(${foods.indexOf(f)})">×</button></div>`).join('')}</div>`
+  }).join('')||'<div class="empty">No food logged yet.</div>';
+}
+function deleteFood(i){day().foods.splice(i,1);save();toast('Food removed')}
+function openFoodModal(){['foodName','foodCal','foodP','foodC','foodF'].forEach(x=>document.getElementById(x).value='');openModal('foodModal')}
+function saveFood(){const n=document.getElementById('foodName').value.trim();if(!n)return toast('Enter a food name');day().foods.push({meal:document.getElementById('foodMeal').value,name:n,cal:+document.getElementById('foodCal').value||0,p:+document.getElementById('foodP').value||0,c:+document.getElementById('foodC').value||0,f:+document.getElementById('foodF').value||0});closeModal('foodModal');save();toast('Food added')}
+function openCustomFoodModal(){openModal('customFoodModal')}
+function saveCustomFood(){const n=document.getElementById('cfName').value.trim();if(!n)return toast('Enter a name');state.customFoods.push({name:n,cal:+cfCal.value||0,p:+cfP.value||0,c:+cfC.value||0,f:+cfF.value||0});closeModal('customFoodModal');save();toast('Custom food saved')}
+function addExerciseRow(){const wrap=document.getElementById('exerciseBuilder');const d=document.createElement('div');d.className='exercise';d.innerHTML=`<div class="formgrid"><div class="field"><label>Exercise</label><input class="exname" placeholder="e.g. Squat"></div><div class="field"><label>Notes</label><input class="exnotes" placeholder="Optional"></div></div><div class="sets"><div class="setinput"><input class="setsn" type="number" placeholder="Sets"></div><div class="setinput"><input class="reps" type="number" placeholder="Reps"></div><div class="setinput"><input class="weight" type="number" placeholder="kg"></div></div>`;wrap.appendChild(d)}
+function openWorkoutModal(){openModal('workoutModal');if(!document.querySelector('.exercise')){document.getElementById('exerciseBuilder').innerHTML='';addExerciseRow()}}
+function saveWorkout(){const exercises=[...document.querySelectorAll('.exercise')].map(e=>({name:e.querySelector('.exname').value.trim(),sets:+e.querySelector('.setsn').value||0,reps:+e.querySelector('.reps').value||0,weight:+e.querySelector('.weight').value||0})).filter(x=>x.name);if(!exercises.length)return toast('Add at least one exercise');const w={date:todayKey(),name:document.getElementById('workoutName').value||'Workout',duration:+document.getElementById('workoutDuration').value||0,exercises};state.workouts.unshift(w);day().workout=w;document.getElementById('exerciseBuilder').innerHTML='';addExerciseRow();save();toast('Workout saved')}
+function renderHistory(){const el=document.getElementById('workoutHistory');if(!state.workouts.length){el.innerHTML='<div class="empty">No workouts yet.</div>';return}el.innerHTML=state.workouts.slice(0,8).map(w=>`<div class="row"><div><strong>${esc(w.name)}</strong><div class="sub">${w.date} · ${w.duration} min · ${w.exercises.length} exercises</div></div><span class="pill">🏋</span></div>`).join('')}
+function openProgressModal(){document.getElementById('weightInput').value='';openModal('progressModal')}
+function saveWeight(){const v=+document.getElementById('weightInput').value;if(!v)return toast('Enter your weight');state.weights.push({date:todayKey(),weight:v});state.weights.sort((a,b)=>a.date.localeCompare(b.date));closeModal('progressModal');save();toast('Weight logged')}
+function renderWeights(){const el=document.getElementById('weightHistory');if(!state.weights.length){currentWeight.textContent=startWeight.textContent=weightChange.textContent='—';document.getElementById('weightChart').innerHTML='<div class="empty" style="width:100%">Log your first weight to see your trend.</div>';el.innerHTML='';return}const ws=state.weights;const cur=ws.at(-1).weight, start=ws[0].weight;currentWeight.textContent=cur+' kg';startWeight.textContent=start+' kg';weightChange.textContent=(cur-start>0?'+':'')+(cur-start).toFixed(1)+' kg';const max=Math.max(...ws.map(x=>x.weight)),min=Math.min(...ws.map(x=>x.weight));document.getElementById('weightChart').innerHTML=ws.slice(-14).map(x=>{const h=max===min?50:12+((x.weight-min)/(max-min))*78;return `<div class="bar" style="height:${h}%"><small>${x.date.slice(5)}</small></div>`}).join('');el.innerHTML=ws.slice().reverse().slice(0,10).map((x,i)=>`<div class="row"><span>${x.date}</span><strong>${x.weight} kg</strong></div>`).join('')}
+function renderGoals(){const g=state.goals;gCalories.value=g.calories;gProtein.value=g.protein;gWater.value=g.water;gSteps.value=g.steps;gWeight.value=g.targetWeight}
+function saveGoals(){state.goals={calories:+gCalories.value||2000,protein:+gProtein.value||120,water:+gWater.value||8,steps:+gSteps.value||8000,targetWeight:+gWeight.value||65};save();toast('Goals updated')}
+function addWater(){day().water++;save();toast('Water added 💧')}
+function openStepsModal(){document.getElementById('stepsInput').value=day().steps;openModal('stepsModal')}
+function saveSteps(){day().steps=Math.max(0,+document.getElementById('stepsInput').value||0);closeModal('stepsModal');save();toast('Steps updated')}
+render();
+</script>
+<script>if('serviceWorker'in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}</script>
+</body>
+</html>
