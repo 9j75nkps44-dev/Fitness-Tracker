@@ -1,4 +1,4 @@
-# FitTrack V1.0 — Fitness & Nutrition Tracker
+# FitTrack V1.0 — Fitness & Nutrition Tracker App
 
 FitTrack is a mobile-friendly fitness and nutrition tracker designed as an all-in-one app for tracking food, workouts, progress, and daily goals.
 
